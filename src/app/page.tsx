@@ -41,8 +41,10 @@ export default function HomePage() {
     }
 
     if (typeof window !== "undefined") {
-      fetchData();
+      fetchData().catch((error) => console.error("Error in fetchData:", error));
     }
+
+    return () => {};
   }, []);
 
   return (
