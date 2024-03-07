@@ -24,6 +24,7 @@ export default function HomePage() {
   useEffect(() => {
     async function fetchData() {
       console.log("hello");
+
       try {
         console.log("try");
 
@@ -46,8 +47,14 @@ export default function HomePage() {
     }
 
     if (typeof window !== "undefined") {
-      fetchData();
+      fetchData().catch((error) => console.error("Error in fetchData:", error));
     }
+
+    // Return a cleanup function to satisfy useEffect requirements
+    return () => {
+      // No cleanup needed
+      // Add any cleanup logic here if required in the future
+    };
   }, []);
 
   return (
@@ -58,7 +65,9 @@ export default function HomePage() {
           <div className="flex h-[300px] w-[500px] items-center justify-start pb-14 pl-12">
             {dayOfWeek && dateText && formattedDate ? (
               <div className="font-inter pr-1 text-5xl font-bold tracking-normal text-black">
-                <div>It's {dayOfWeek},</div>
+                <div>
+                  <div>{`It's ${dayOfWeek},`}</div>,
+                </div>
                 <div>{dateText}</div>
                 <div>at {formattedDate}</div>
               </div>
