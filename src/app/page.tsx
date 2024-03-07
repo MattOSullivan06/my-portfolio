@@ -44,7 +44,11 @@ export default function HomePage() {
       fetchData().catch((error) => console.error("Error in fetchData:", error));
     }
 
-    return () => {};
+    // Return a cleanup function to satisfy useEffect requirements
+    return () => {
+      // No cleanup needed
+      // Add any cleanup logic here if required in the future
+    };
   }, []);
 
   return (
