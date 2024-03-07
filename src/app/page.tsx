@@ -10,9 +10,11 @@ import { getCatFact } from "~/utils/catFactApi";
 
 export default function HomePage() {
   const [weather, setWeather] = useState<Weather | null>(null);
-  const [dayOfWeek, setDayOfWeek] = useState<string>("");
-  const [dateText, setDateText] = useState<string>("");
-  const [formattedDate, setFormattedDate] = useState<string>("Loading...");
+  const [dayOfWeek, setDayOfWeek] = useState<string | undefined>("");
+  const [dateText, setDateText] = useState<string | undefined>("");
+  const [formattedDate, setFormattedDate] = useState<string | undefined>(
+    "Loading...",
+  );
   const [catFact, setCatFact] = useState<string>("Loading...");
 
   const celsiusToFahrenheit = (celsius: number): number => {
@@ -67,7 +69,6 @@ export default function HomePage() {
                 <p>
                   My name is Matt! I was a law student who switched to software.
                   I enjoy playing squash, pickleball, and board games.
-                  
                 </p>
 
                 <br />

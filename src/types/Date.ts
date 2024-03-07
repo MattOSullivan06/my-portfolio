@@ -4,7 +4,7 @@ export interface DateData {
 }
 
 export interface FormattedDate {
-  dayOfWeek: string;
-  dateText: string;
-  formattedDate: string;
+  dayOfWeek: string | undefined;
+  dateText: string | undefined;
+  formattedDate: string | undefined;
 }

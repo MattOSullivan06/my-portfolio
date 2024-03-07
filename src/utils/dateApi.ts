@@ -29,7 +29,7 @@ export async function getFormattedDate(): Promise<FormattedDate> {
   }
 }
 
-function getDayOfWeek(date: Date): string {
+function getDayOfWeek(date: Date): string | undefined{
   const daysOfWeek = [
     "Sunday",
     "Monday",
@@ -43,8 +43,9 @@ function getDayOfWeek(date: Date): string {
 }
 
 function formatDateText(date: Date): string {
-  const options = { month: "short", day: "2-digit", year: "numeric" };
+  const options: Intl.DateTimeFormatOptions = { month: "short", day: "2-digit", year: "numeric" };
   let dateText = date.toLocaleDateString("en-US", options);
   dateText = dateText.replace(/,/g, "");
   return dateText;
 }
+
