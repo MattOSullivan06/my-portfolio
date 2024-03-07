@@ -23,17 +23,21 @@ export default function HomePage() {
 
   useEffect(() => {
     async function fetchData() {
-      const [weatherData, dateData, catFactResponse] = await Promise.all([
-        getWeather(),
-        getFormattedDate(),
-        getCatFact(),
-      ]);
+      try {
+        const [weatherData, dateData, catFactResponse] = await Promise.all([
+          getWeather(),
+          getFormattedDate(),
+          getCatFact(),
+        ]);
 
-      setWeather(weatherData);
-      setDayOfWeek(dateData.dayOfWeek);
-      setDateText(dateData.dateText);
-      setFormattedDate(dateData.formattedDate);
-      setCatFact(catFactResponse.data);
+        setWeather(weatherData);
+        setDayOfWeek(dateData.dayOfWeek);
+        setDateText(dateData.dateText);
+        setFormattedDate(dateData.formattedDate);
+        setCatFact(catFactResponse.data);
+      } catch (error) {
+        console.error("Failed to fetch data:", error);
+      }
     }
 
     if (typeof window !== "undefined") {
@@ -49,7 +53,7 @@ export default function HomePage() {
           <div className="flex h-[300px] w-[500px] items-center justify-start pb-14 pl-12">
             {dayOfWeek && dateText && formattedDate ? (
               <div className="font-inter pr-1 text-5xl font-bold tracking-normal text-black">
-                <div>{`It's ${dayOfWeek},`},</div>
+                <div>It\'s {dayOfWeek},</div>
                 <div>{dateText}</div>
                 <div>at {formattedDate}</div>
               </div>
