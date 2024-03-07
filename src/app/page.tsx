@@ -1,37 +1,112 @@
-import Link from "next/link";
+"use client";
+
+import React, { useEffect, useState } from "react";
+import Header from "~/components/Header";
+import Card from "~/components/Card";
+import { getWeather } from "~/utils/weatherApi";
+import { getFormattedDate } from "~/utils/dateApi";
+import { Weather } from "~/types/Weather";
+import { getCatFact } from "~/utils/catFactApi";
 
 export default function HomePage() {
+  const [weather, setWeather] = useState<Weather | null>(null);
+  const [dayOfWeek, setDayOfWeek] = useState<string>("");
+  const [dateText, setDateText] = useState<string>("");
+  const [formattedDate, setFormattedDate] = useState<string>("Loading...");
+  const [catFact, setCatFact] = useState<string>("Loading...");
+
+  const celsiusToFahrenheit = (celsius: number): number => {
+    return Math.round((celsius * 9) / 5 + 32);
+  };
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const [weatherData, dateData, catFactResponse] = await Promise.all([
+          getWeather(),
+          getFormattedDate(),
+          getCatFact(),
+        ]);
+
+        setWeather(weatherData);
+        setDayOfWeek(dateData.dayOfWeek);
+        setDateText(dateData.dateText);
+        setFormattedDate(dateData.formattedDate);
+        setCatFact(catFactResponse.data);
+      } catch (error) {
+        console.error("Failed to fetch data:", error);
+      }
+    }
+
+    if (typeof window !== "undefined") {
+      fetchData();
+    }
+  }, []);
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
-      <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-        <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
-          Create <span className="text-[hsl(280,100%,70%)]">T3</span> App
-        </h1>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
-          <Link
-            className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
-            href="https://create.t3.gg/en/usage/first-steps"
-            target="_blank"
-          >
-            <h3 className="text-2xl font-bold">First Steps →</h3>
-            <div className="text-lg">
-              Just the basics - Everything you need to know to set up your
-              database and authentication.
-            </div>
-          </Link>
-          <Link
-            className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
-            href="https://create.t3.gg/en/introduction"
-            target="_blank"
-          >
-            <h3 className="text-2xl font-bold">Documentation →</h3>
-            <div className="text-lg">
-              Learn more about Create T3 App, the libraries it uses, and how to
-              deploy it.
-            </div>
-          </Link>
+    <div>
+      <Header />
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="grid h-[750px] w-[1000px] grid-cols-2 md:grid-cols-2">
+          <div className="flex h-[300px] w-[500px] items-center justify-start pb-14 pl-12">
+            {dayOfWeek && dateText && formattedDate ? (
+              <div className="font-inter pr-1 text-5xl font-bold tracking-normal text-black">
+                <div>It's {dayOfWeek},</div>
+                <div>{dateText}</div>
+                <div>at {formattedDate}</div>
+              </div>
+            ) : (
+              <div className="font-inter pr-1 text-5xl font-bold tracking-normal text-black">
+                Loading...
+              </div>
+            )}
+          </div>
+          <div className="flex h-[300px] items-center justify-center p-4">
+            <Card label="About Me">
+              <div className="text">
+                <p>
+                  My name is Matt! I was a law student who switched to software.
+                  I enjoy playing squash, pickleball, and board games.
+                  
+                </p>
+
+                <br />
+                <p>
+                  My favorite programming languages are JavaScript, TypeScript,
+                  and Python!
+                </p>
+              </div>
+            </Card>
+          </div>
+          <div className="flex h-[300px] items-center justify-center p-4">
+            {weather ? (
+              <Card label="Scottsdale, AZ">
+                <div>
+                  <p className="pt-6 text-6xl font-bold">
+                    {celsiusToFahrenheit(weather.current.temperature_2m)}°F
+                  </p>
+                  <p className="pt-6 text-xl font-bold">
+                    Wind Speed (km/h): {weather.current.wind_speed_10m} km/h
+                  </p>
+                  <p className="pt-2 text-xl font-bold">
+                    Humidity: {weather.current.relative_humidity_2m}%
+                  </p>
+                </div>
+              </Card>
+            ) : (
+              <Card label="Scottsdale, AZ">
+                <div className="text-md">Loading weather data...</div>
+              </Card>
+            )}
+          </div>
+
+          <div className="flex h-[300px] items-center justify-center p-4">
+            <Card label="Cat Fact">
+              <div>{catFact}</div>
+            </Card>
+          </div>
         </div>
       </div>
-    </main>
+    </div>
   );
 }
