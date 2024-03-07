@@ -1,4 +1,4 @@
-import type { Weather } from "~/types/Weather";
+import type { Weather, WeatherData } from "~/types/Weather";
 
 export async function getWeather(): Promise<Weather> {
   try {
@@ -10,11 +10,11 @@ export async function getWeather(): Promise<Weather> {
       throw new Error("Failed to fetch weather data");
     }
 
-    const weatherData: Weather = await response.json() as Weather;
+    const weatherData: Weather = await response.json() as WeatherData;
 
     // Validate weather data here if needed
 
-    return weatherData as Weather;
+    return weatherData;
   } catch (error) {
     // Handle errors
     console.error("Error fetching weather data:", error);
