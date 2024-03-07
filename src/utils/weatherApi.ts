@@ -10,7 +10,7 @@ export async function getWeather(): Promise<Weather> {
       throw new Error("Failed to fetch weather data");
     }
 
-    const weatherData = await response.json();
+    const weatherData: Weather = await response.json() as Weather;
 
     // Validate weather data here if needed
 
