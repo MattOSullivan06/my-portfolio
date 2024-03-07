@@ -23,9 +23,5 @@ export interface Weather {
 }
 
 
-export interface CatFactResponse {
-  data: string;
-}
-
 
 

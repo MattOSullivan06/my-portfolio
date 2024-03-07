@@ -5,7 +5,7 @@ import Header from "~/components/Header";
 import Card from "~/components/Card";
 import { getWeather } from "~/utils/weatherApi";
 import { getFormattedDate } from "~/utils/dateApi";
-import { Weather } from "~/types/Weather";
+import type { Weather } from "~/types/Weather";
 import { getCatFact } from "~/utils/catFactApi";
 
 export default function HomePage() {
