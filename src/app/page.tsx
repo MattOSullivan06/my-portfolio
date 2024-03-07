@@ -66,7 +66,7 @@ export default function HomePage() {
             {dayOfWeek && dateText && formattedDate ? (
               <div className="font-inter pr-1 text-5xl font-bold tracking-normal text-black">
                 <div>
-                  <div>{`It's ${dayOfWeek},`}</div>,
+                  <div>{`It's ${dayOfWeek},`}</div>
                 </div>
                 <div>{dateText}</div>
                 <div>at {formattedDate}</div>
