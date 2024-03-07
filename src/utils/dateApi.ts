@@ -1,10 +1,10 @@
-import type { DateData, FormattedDate } from "~/types/Date";
+import type { DateData, FormattedDate,  IpifyResponse} from "~/types/Date";
 
 export async function getFormattedDate(): Promise<FormattedDate> {
   const response = await fetch("https://api.ipify.org?format=json");
-  const { ip }: { ip: string } = await response.json();
-  const dateResponse = await fetch(`http://worldtimeapi.org/api/ip/${ip}`);
-  const jsonData: DateData = await dateResponse.json();
+  const { ip }: IpifyResponse = await response.json() as IpifyResponse;
+    const dateResponse = await fetch(`http://worldtimeapi.org/api/ip/${ip}`);
+    const jsonData: DateData = await dateResponse.json() as DateData;
 
   const { datetime } = jsonData;
 
