@@ -1,35 +1,22 @@
-import { DateData, FormattedDate} from "~/types/Date";
+import type { DateData, FormattedDate } from "~/types/Date";
 
 export async function getFormattedDate(): Promise<FormattedDate> {
-  try {
-    const response = await fetch("https://api.ipify.org?format=json");
-    const { ip } = await response.json();
-    const dateResponse = await fetch(`http://worldtimeapi.org/api/ip/${ip}`);
-    const jsonData: DateData = await dateResponse.json();
+  const response = await fetch("https://api.ipify.org?format=json");
+  const { ip } = await response.json();
+  const dateResponse = await fetch(`http://worldtimeapi.org/api/ip/${ip}`);
+  const jsonData: DateData = await dateResponse.json();
 
-    if (!("abbreviation" in jsonData && "datetime" in jsonData)) {
-      throw new Error('Failed to fetch abbreviation or datetime');
-    }
+  const { datetime } = jsonData;
 
-    const { abbreviation, datetime } = jsonData;
+  const date = new Date(datetime);
+  const dayOfWeek = getDayOfWeek(date);
+  const dateText = formatDateText(date);
+  const formattedDate = `${date.toLocaleString("en-US", { hour: "numeric", minute: "numeric", hour12: true })}`;
 
-    if (!abbreviation || !datetime) {
-      throw new Error('Failed to fetch abbreviation or datetime');
-    }
-
-    const date = new Date(datetime);
-    const dayOfWeek = getDayOfWeek(date);
-    const dateText = formatDateText(date);
-    const formattedDate = `${date.toLocaleString("en-US", { hour: "numeric", minute: "numeric", hour12: true })}`;
-
-    return { dayOfWeek, dateText, formattedDate };
-  } catch (error: any) {
-    console.error("Error fetching date data:", error.message);
-    throw new Error("Failed to fetch date data");
-  }
+  return { dayOfWeek, dateText, formattedDate };
 }
 
-function getDayOfWeek(date: Date): string | undefined{
+function getDayOfWeek(date: Date): string | undefined {
   const daysOfWeek = [
     "Sunday",
     "Monday",
@@ -48,4 +35,3 @@ function formatDateText(date: Date): string {
   dateText = dateText.replace(/,/g, "");
   return dateText;
 }
-

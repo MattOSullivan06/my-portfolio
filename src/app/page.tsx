@@ -23,21 +23,17 @@ export default function HomePage() {
 
   useEffect(() => {
     async function fetchData() {
-      try {
-        const [weatherData, dateData, catFactResponse] = await Promise.all([
-          getWeather(),
-          getFormattedDate(),
-          getCatFact(),
-        ]);
+      const [weatherData, dateData, catFactResponse] = await Promise.all([
+        getWeather(),
+        getFormattedDate(),
+        getCatFact(),
+      ]);
 
-        setWeather(weatherData);
-        setDayOfWeek(dateData.dayOfWeek);
-        setDateText(dateData.dateText);
-        setFormattedDate(dateData.formattedDate);
-        setCatFact(catFactResponse.data);
-      } catch (error) {
-        console.error("Failed to fetch data:", error);
-      }
+      setWeather(weatherData);
+      setDayOfWeek(dateData.dayOfWeek);
+      setDateText(dateData.dateText);
+      setFormattedDate(dateData.formattedDate);
+      setCatFact(catFactResponse.data);
     }
 
     if (typeof window !== "undefined") {
